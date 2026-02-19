@@ -1,4 +1,7 @@
+mod command;
 mod db;
+
+use command::Command;
 use db::{Db, Value};
 use std::io::{self, Write};
 
@@ -20,54 +23,35 @@ fn main() {
             continue;
         }
 
-        let parts: Vec<&str> = input.splitn(3, ' ').collect();
+        let cmd = Command::parse(input);
 
-        match parts[0].to_uppercase().as_str() {
-            "GET" => {
-                if parts.len() < 2 {
-                    println!("Usage: GET <key>");
-                } else {
-                    match db.get(parts[1]) {
-                        Some(Value::String(s)) => println!("\"{}\"", s),
-                        Some(Value::Int(n)) => println!("{}", n),
-                        None => println!("(nil)"),
-                    }
-                }
+        match cmd {
+            Command::Get { key } => match db.get(&key) {
+                Some(Value::String(s)) => println!("\"{}\"", s),
+                Some(Value::Int(n)) => println!("{}", n),
+                None => println!("(nil)"),
+            },
+            Command::Set { key, value } => {
+                let val = match value.parse::<i64>() {
+                    Ok(n) => Value::Int(n),
+                    Err(_) => Value::String(value),
+                };
+                db.set(key, val);
+                println!("OK");
             }
-            "SET" => {
-                if parts.len() < 3 {
-                    println!("Usage: SET <key> <value>");
-                } else {
-                    let val = match parts[2].parse::<i64>() {
-                        Ok(n) => Value::Int(n),
-                        Err(_) => Value::String(parts[2].to_string()),
-                    };
-                    db.set(parts[1].to_string(), val);
-                    println!("OK");
-                }
+            Command::Del { key } => match db.del(&key) {
+                true => println!("OK"),
+                false => println!("NOT FOUND"),
+            },
+            Command::Exists { key } => match db.exists(&key) {
+                true => println!("OK"),
+                false => println!("NOT FOUND"),
+            },
+            Command::Exit => {
+                println!("Bye!");
+                break;
             }
-            "DEL" => {
-                if parts.len() < 2 {
-                    println!("Usage: DEL <key>");
-                } else {
-                    match db.del(parts[1]) {
-                        true => println!("OK"),
-                        false => println!("NOT FOUND"),
-                    }
-                }
-            }
-            "EXISTS" => {
-                if parts.len() < 2 {
-                    println!("Usage: EXISTS <key>");
-                } else {
-                    let key = parts[1];
-                    match db.exists(key) {
-                        true => println!("OK"),
-                        false => println!("NOT FOUND"),
-                    }
-                }
-            }
-            _ => println!("Unknown command"),
+            Command::Unknown(msg) => println!("{}", msg),
         }
     }
 }
