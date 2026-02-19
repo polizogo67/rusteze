@@ -1,8 +1,5 @@
-mod command;
-mod db;
-
-use command::Command;
-use db::{Db, Value};
+use rusteze::command::Command;
+use rusteze::db::{Db, Value};
 use std::io::{self, Write};
 
 fn main() {

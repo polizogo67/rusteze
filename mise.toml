@@ -1,9 +1,14 @@
 [tools]
 rust = "stable"
 
-[tasks.run]
-alias = "rr"
-run = "cargo run"
+[tasks.run-cli]
+alias = "cli"
+run = "cargo run --bin cli"
+
+[tasks.run-server]
+alias = "server"
+run = "cargo run --bin server"
+
 
 [tasks.build-release]
 alias = "br"
