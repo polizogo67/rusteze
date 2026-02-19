@@ -55,3 +55,48 @@ impl Command {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_get() {
+        assert!(matches!(Command::parse("GET name"), Command::Get { key } if key == "name"));
+    }
+
+    #[test]
+    fn test_parse_set() {
+        assert!(matches!(Command::parse("SET name Alice"), Command::Set { key, value } if key == "name" && value == "Alice"));
+    }
+
+    #[test]
+    fn test_parse_del() {
+        assert!(matches!(Command::parse("DEL name"), Command::Del { key } if key == "name"));
+    }
+
+    #[test]
+    fn test_parse_exists() {
+        assert!(matches!(Command::parse("EXISTS name"), Command::Exists { key } if key == "name"));
+    }
+
+    #[test]
+    fn test_parse_exit() {
+        assert!(matches!(Command::parse("EXIT"), Command::Exit));
+    }
+
+    #[test]
+    fn test_parse_unknown() {
+        assert!(matches!(Command::parse("FOO"), Command::Unknown(_)));
+    }
+
+    #[test]
+    fn test_parse_get_missing_key() {
+        assert!(matches!(Command::parse("GET"), Command::Unknown(_)));
+    }
+
+    #[test]
+    fn test_parse_case_insensitive() {
+        assert!(matches!(Command::parse("get name"), Command::Get { key } if key == "name"));
+    }
+}
