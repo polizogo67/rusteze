@@ -34,7 +34,10 @@ fn main() {
                 if parts.len() < 3 {
                     println!("Usage: SET <key> <value>");
                 } else {
-                    let val = Value::String(parts[2].to_string());
+                    let val = match parts[2].parse::<i64>() {
+                        Ok(n) => Value::Int(n),
+                        Err(_) => Value::String(parts[2].to_string()),
+                    };
                     db.set(parts[1].to_string(), val);
                     println!("OK");
                 }
