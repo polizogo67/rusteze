@@ -27,7 +27,11 @@ fn main() {
                 if parts.len() < 2 {
                     println!("Usage: GET <key>");
                 } else {
-                    println!("{:?}", db.get(parts[1]))
+                    match db.get(parts[1]) {
+                        Some(Value::String(s)) => println!("\"{}\"", s),
+                        Some(Value::Int(n)) => println!("{}", n),
+                        None => println!("(nil)"),
+                    }
                 }
             }
             "SET" => {
