@@ -17,7 +17,7 @@ fn main() {
         let input = input.trim();
 
         if input.eq_ignore_ascii_case("exit") {
-            println!("Bye!");
+            println!("Ka-chow! ⚡");
             break;
         } else if input.is_empty() {
             continue;
@@ -48,7 +48,7 @@ fn main() {
                 false => println!("NOT FOUND"),
             },
             Command::Exit => {
-                println!("Bye!");
+                println!("Ka-chow! ⚡");
                 break;
             }
             Command::Unknown(msg) => println!("{}", msg),
