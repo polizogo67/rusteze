@@ -1,5 +1,5 @@
 [tools]
-rust = "latest"
+rust = "stable"
 
 [tasks.run]
 alias = "rr"
