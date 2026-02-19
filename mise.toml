@@ -1,2 +1,10 @@
 [tools]
 rust = "latest"
+
+[tasks.run]
+alias = "rr"
+run = "cargo run"
+
+[tasks.build-release]
+alias = "br"
+run = "cargo build --release"
