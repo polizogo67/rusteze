@@ -7,11 +7,25 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug rusteze",
+            "name": "Debug server",
             "cargo": {
-                "args": [ "build", "--bin=rusteze", "--package=rusteze" ],
+                "args": [ "build", "--bin=server", "--package=rusteze" ],
                 "filter": {
-                    "name": "rusteze",
+                    "name": "server",
+                    "kind": "bin"
+                }
+            },
+            "args": [ ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug cli",
+            "cargo": {
+                "args": [ "build", "--bin=cli", "--package=rusteze" ],
+                "filter": {
+                    "name": "cli",
                     "kind": "bin"
                 }
             },

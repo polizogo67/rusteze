@@ -12,4 +12,8 @@ run = "cargo run --bin server"
 
 [tasks.build-release]
 alias = "br"
-run = "cargo build --release"
+run = """
+cargo build --release
+cross build --target x86_64-unknown-linux-gnu  --release
+cross build --target x86_64-pc-windows-gnu --release
+"""
